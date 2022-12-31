@@ -7,13 +7,14 @@ const ejsMate = require('ejs-mate');
 const session = require('express-session');
 const flash = require('connect-flash');
 
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+
+const app = express()
+const User = require('./models/user');
+
 // Validation and Error
 const ExpressError = require('./utils/ExpressError');
-
-// Routes
-const campgrounds = require('./routes/campgrounds');
-const reviews = require('./routes/reviews');
-
 
 // Connecting with the database
 mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp')
@@ -24,8 +25,6 @@ db.on("error", console.error.bind(console, "Connection Error:"));
 db.once('open', () => {
     console.log('Database connected')
 })
-
-const app = express()
 
 // Setting the ejs engine
 app.engine('ejs', ejsMate)
@@ -57,17 +56,27 @@ app.use((req, res, next) => {
     next();
 })
 
-app.use('/campgrounds', campgrounds); // campground site
-app.use('/campgrounds/:id/reviews', reviews); // review site
+// Setting up passport (passport must be set before routes!)
+app.use(passport.initialize()); // To initialize the passport
+app.use(passport.session()); // To let express session work, must be put after express session
+passport.use(new LocalStrategy(User.authenticate()));
 
+passport.serializeUser(User.serializeUser()); // How to store user in the session
+passport.deserializeUser(User.deserializeUser()); // How to get user out of the session
+
+// Setting up routes
+const campgroundRoutes = require('./routes/campgrounds');
+const reviewRoutes = require('./routes/reviews');
+const userRoutes = require('./routes/users');
+app.use('/campgrounds', campgroundRoutes); // campground site
+app.use('/campgrounds/:id/reviews', reviewRoutes); // review site
+app.use('/', userRoutes);
+
+
+// Basic Routes
 app.get('/', (req, res) => {
     res.render('home')
 })
-
-
-
-
-
 
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found!', 404))
