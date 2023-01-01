@@ -7,26 +7,26 @@ const { isLoggedIn, isCampAuthor, validateCampground } = require('../middleware'
 
 
 // Whole index
-router.get('', catchAsync(campgrounds.index));
+router.route('')
+    .get(catchAsync(campgrounds.index))
+    .post(isLoggedIn, validateCampground, catchAsync(campgrounds.createCampground));
+
 
 // Create a new campground, this must be before show_get, because `new` will be
 // treated as one id.
 router.get('/new', isLoggedIn, campgrounds.renderNewForm);
 
-router.post('', isLoggedIn, validateCampground, catchAsync(campgrounds.createCampground));
-
 
 // Show specific id
-router.get('/:id', catchAsync(campgrounds.showCampground));
+router.route('/:id')
+    .get(catchAsync(campgrounds.showCampground))
+    .put(isLoggedIn, isCampAuthor, validateCampground, catchAsync(campgrounds.EditCampground))
+    .delete(isLoggedIn, isCampAuthor, catchAsync(campgrounds.deleteCampground))
 
 
 // Edit the campground
-router.get('/:id/edit', isLoggedIn, isCampAuthor, catchAsync(campgrounds.renderEditForm));
+router.route('/:id/edit')
+    .get(isLoggedIn, isCampAuthor, catchAsync(campgrounds.renderEditForm))
 
-router.put('/:id/', isLoggedIn, isCampAuthor, validateCampground, catchAsync(campgrounds.EditCampground));
-
-
-// Delete the campground
-router.delete('/:id', isLoggedIn, isCampAuthor, catchAsync(campgrounds.deleteCampground));
 
 module.exports = router;
