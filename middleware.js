@@ -3,6 +3,7 @@ module.exports.isLoggedIn = (req, res, next) => {
         req.flash('error', 'You must be signed in.');
         res.redirect('/login');
     }
-    else // if this else is dismissed, express will throw an error.
+    else {// if this else is dismissed, express will throw an error.
         next(); 
+    }
 }

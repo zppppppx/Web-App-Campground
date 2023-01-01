@@ -47,15 +47,6 @@ const sessionConfig = {
 }
 app.use(session(sessionConfig));
 
-// Setting up flash
-app.use(flash())
-
-app.use((req, res, next) => {
-    res.locals.success = req.flash('success');
-    res.locals.error = req.flash('error');
-    next();
-})
-
 // Setting up passport (passport must be set before routes!)
 app.use(passport.initialize()); // To initialize the passport
 app.use(passport.session()); // To let express session work, must be put after express session
@@ -63,6 +54,17 @@ passport.use(new LocalStrategy(User.authenticate()));
 
 passport.serializeUser(User.serializeUser()); // How to store user in the session
 passport.deserializeUser(User.deserializeUser()); // How to get user out of the session
+
+// Setting up flash
+app.use(flash())
+
+app.use((req, res, next) => {
+    res.locals.currentUser = req.user;
+    // console.log(req.user);
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+})
 
 // Setting up routes
 const campgroundRoutes = require('./routes/campgrounds');
