@@ -3,7 +3,7 @@ const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
 const Campground = require('../models/campground');
 
-const { isLoggedIn, isAuthor, validateCampground } = require('../middleware');
+const { isLoggedIn, isCampAuthor, validateCampground } = require('../middleware');
 
 
 // Whole index
@@ -32,7 +32,13 @@ router.post('', isLoggedIn, validateCampground, catchAsync(async (req, res) => {
 
 // Show specific id
 router.get('/:id', catchAsync(async (req, res) => {
-    const campground = await Campground.findById(req.params.id).populate('reviews').populate('author');
+    const campground = await Campground.findById(req.params.id).populate({
+        path: 'reviews',
+        populate: {
+            path: 'author',
+            // select: 'username', // if we only need the username
+        }
+    }).populate('author'); // First populate will populate the reivews and the second campground
     if (!campground) {
         req.flash('error', 'Cannot find that campground!');
         res.redirect('/campgrounds');
@@ -42,7 +48,7 @@ router.get('/:id', catchAsync(async (req, res) => {
 
 
 // Edit the campground
-router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
+router.get('/:id/edit', isLoggedIn, isCampAuthor, catchAsync(async (req, res) => {
     const{ id } = req.params;
     const campground = await Campground.findById(id);
     if (!campground) {
@@ -52,7 +58,7 @@ router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
     res.render('campgrounds/edit', { campground });
 }))
 
-router.put('/:id/', isLoggedIn, isAuthor, validateCampground, catchAsync(async (req, res) => {
+router.put('/:id/', isLoggedIn, isCampAuthor, validateCampground, catchAsync(async (req, res) => {
     const { id } = req.params;
     const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground }); // Break this up to allow permission
 
@@ -61,7 +67,7 @@ router.put('/:id/', isLoggedIn, isAuthor, validateCampground, catchAsync(async (
 }))
 
 
-router.delete('/:id', isLoggedIn, isAuthor, async (req, res) => {
+router.delete('/:id', isLoggedIn, isCampAuthor, async (req, res) => {
     const { id } = req.params;
 
     await Campground.findByIdAndDelete(id);
