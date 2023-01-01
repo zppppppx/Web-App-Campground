@@ -5,20 +5,21 @@ const users = require('../controllers/users');
 const passport = require('passport');
 
 // Register
-router.get('/register', users.renderRegisterForm);
-
-router.post('/register', catchAsync(users.register));
+router.route('/register')
+    .get(users.renderRegisterForm)
+    .post(catchAsync(users.register));
 
 
 // Log in & log out
-router.get('/login', users.renderLoginForm);
-
-router.post('/login', 
-// keepSessionInfo must be set to true in case we need to store some information in the session
+router.route('/login')
+    .get(users.renderLoginForm)
+    .post(
+    // keepSessionInfo must be set to true in case we need to store some information in the session
     passport.authenticate('local', { failureFlash: true, failureRedirect: '/login', keepSessionInfo: true}), 
     users.login);
 
-router.get('/logout', users.logout)
+router.route('/logout')
+    .get(users.logout);
 
 
 module.exports = router;
