@@ -67,12 +67,13 @@ app.use((req, res, next) => {
 })
 
 // Setting up routes
+const userRoutes = require('./routes/users');
 const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
-const userRoutes = require('./routes/users');
+app.use('/', userRoutes);
 app.use('/campgrounds', campgroundRoutes); // campground site
 app.use('/campgrounds/:id/reviews', reviewRoutes); // review site
-app.use('/', userRoutes);
+
 
 
 // Basic Routes
