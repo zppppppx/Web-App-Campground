@@ -1,4 +1,8 @@
 // Basic Framework
+if(process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
+}
+
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
@@ -9,6 +13,7 @@ const flash = require('connect-flash');
 
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
+
 
 const app = express()
 const User = require('./models/user');

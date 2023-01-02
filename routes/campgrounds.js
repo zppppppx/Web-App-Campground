@@ -3,13 +3,22 @@ const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
 const campgrounds = require('../controllers/campgrounds')
 
+const multer = require('multer');
+const { storage } = require('../cloudinary/index')
+const upload = multer({ storage });
+
+
 const { isLoggedIn, isCampAuthor, validateCampground } = require('../middleware');
 
 
 // Whole index
-router.route('')
+router.route('/')
     .get(catchAsync(campgrounds.index))
-    .post(isLoggedIn, validateCampground, catchAsync(campgrounds.createCampground));
+    // .post(isLoggedIn, validateCampground, catchAsync(campgrounds.createCampground));
+    .post(upload.array('image'), (req, res) => {
+        console.log(req.body, req.files);
+        res.send('workded!');
+    })
 
 
 // Create a new campground, this must be before show_get, because `new` will be
