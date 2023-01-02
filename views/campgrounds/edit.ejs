@@ -58,7 +58,7 @@
                 <!-- Delete images -->
                 <div class="mb-3">
                     <% campground.images.forEach((image, index) => { %> 
-                        <img src="<%= image.url %>" class="img-thumbnail" alt="">
+                        <img src="<%= image.thumbnail %>" class="img-thumbnail" alt="">
                     <div class="form-check-inline">
                         <!-- Here what we selected will add the value to the array in the name -->
                         <input type="checkbox" name="deleteImages[]" id="image-<%= index %>" value="<%= image.filename %>">
