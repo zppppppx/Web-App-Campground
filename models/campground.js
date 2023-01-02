@@ -12,6 +12,10 @@ ImageSchema.virtual('thumbnail').get(function () {
     return this.url.replace('/upload', '/upload/w_200,h_150,c_fill'); //using virtual can ease the storage.
 })
 
+ImageSchema.virtual('showPage').get(function() {
+    return this.url.replace('/upload', '/upload/w_1920,h_1080,c_fill');
+})
+
 const CampgroundSchema = new Schema({
     title: String,
     price: Number,
