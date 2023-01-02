@@ -14,11 +14,7 @@ const { isLoggedIn, isCampAuthor, validateCampground } = require('../middleware'
 // Whole index
 router.route('/')
     .get(catchAsync(campgrounds.index))
-    // .post(isLoggedIn, validateCampground, catchAsync(campgrounds.createCampground));
-    .post(upload.array('image'), (req, res) => {
-        console.log(req.body, req.files);
-        res.send('workded!');
-    })
+    .post(isLoggedIn, upload.array('image'), validateCampground, catchAsync(campgrounds.createCampground));
 
 
 // Create a new campground, this must be before show_get, because `new` will be
