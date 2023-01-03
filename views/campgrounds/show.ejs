@@ -1,15 +1,23 @@
 <% layout('layouts/boilerplate') %>
 <link rel="stylesheet" href="/stylesheets/stars.css">
 
+
   <div class="row">
     <div class="col-6">
       <div id="campgroundGallery" class="carousel slide carousel-dark" data-bs-ride="carousel">
         <div class="carousel-inner">
-          <% campground.images.forEach((image, index) => {%>
-          <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
-            <img src="<%= image.showPage %>" class="d-block w-100" alt="">
-          </div>
-          <% }) %> 
+          <% if(!campgrounds.images.length) {%> 
+            <div class="carousel-item active">
+              <img src="https://res.cloudinary.com/dhwbsgmjw/image/upload/v1672714865/YelpCamp/pexels-photo-219972_e6pa8k.jpg"
+               class="d-block w-100" alt="">
+            </div>
+          <% } else { %> 
+            <% campground.images.forEach((image, index) => {%>
+            <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+              <img src="<%= image.showPage %>" class="d-block w-100" alt="">
+            </div>
+            <% }) %>
+          <% } %> 
         </div>
         <% if (campground.images.length > 1) { %> 
         <button class="carousel-control-prev" type="button" data-bs-target="#campgroundGallery" data-bs-slide="prev">
@@ -56,6 +64,7 @@
     </div>
 
     <div class="col-6">
+      <div id='map' style='width: 600px; height: 300px;'></div>
       <!-- Review Part -->
       <% if(currentUser) { %> 
         <h2>Leave a Review</h2>
@@ -107,3 +116,9 @@
         <% } %>
     </div>
   </div>
+
+  <script>
+    const mapboxToken = '<%-process.env.MAPBOX_TOKEN%>';
+    const campground = <%-JSON.stringify(campground)%>;
+  </script>
+  <script src="/javascripts/showMap.js"></script>
