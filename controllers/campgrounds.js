@@ -15,11 +15,13 @@ module.exports.renderNewForm = (req, res) => {
 };
 
 module.exports.createCampground = async (req, res) => {
-    const geoData = geocoder.forwardGeocode({
+    const geoData = await geocoder.forwardGeocode({
         query: req.body.campground.location,
         limit: 1,
     }).send();
     const campground = new Campground(req.body.campground);
+    // here [0] corresponds to limit 1, thats to say only one data sent back.
+    campground.geometry = geoData.body.features[0].geometry
     campground.images = req.files.map(f => ({ url: f.path, filename: f.filename }));
     campground.author = req.user._id;
     await campground.save();
@@ -39,7 +41,8 @@ module.exports.showCampground = async (req, res) => {
         req.flash('error', 'Cannot find that campground!');
         res.redirect('/campgrounds');
     }
-    res.render('campgrounds/show', { campground });
+    const loadMap = true;
+    res.render('campgrounds/show', { campground, loadMap });
 };
 
 module.exports.renderEditForm = async (req, res) => {
