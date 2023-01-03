@@ -40,7 +40,7 @@ const seedDB = async () => {
             ],
             geometry: {
                 type: 'Point',
-                coordinates: [ 120.071318047829, 28.7259021944903 ]
+                coordinates: [ cities[random1000].longitude, cities[random1000].latitude ],
               },
         })
         await camp.save()
