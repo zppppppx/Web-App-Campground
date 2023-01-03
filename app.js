@@ -10,6 +10,7 @@ const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const session = require('express-session');
 const flash = require('connect-flash');
+const mongoSanitize = require('express-mongo-sanitize');
 
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
@@ -36,6 +37,7 @@ app.engine('ejs', ejsMate)
 app.use(express.urlencoded({ extended: true })) // for parsing request object
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public'))); // Setting the static response directory.
+app.use(mongoSanitize()); // Setting prohibition on some administrative queries
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'))
 

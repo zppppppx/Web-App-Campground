@@ -119,6 +119,6 @@
 
   <script>
     const mapboxToken = '<%-process.env.MAPBOX_TOKEN%>';
-    const campground = <%-JSON.stringify(campground)%>;
+    const campground = <%-JSON.stringify(campground)%>; // This way is vulenrable if we pass some HTML to the title
   </script>
   <script src="/javascripts/showMap.js"></script>
