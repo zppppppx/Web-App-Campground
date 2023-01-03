@@ -3,6 +3,8 @@ const Review = require('./review');
 
 const Schema = mongoose.Schema;
 
+const opts = { toJSON: { virtuals: true } }
+
 const ImageSchema = new Schema({
     url: String,
     filename: String,
@@ -12,7 +14,7 @@ ImageSchema.virtual('thumbnail').get(function () {
     return this.url.replace('/upload', '/upload/w_200,h_150,c_fill'); //using virtual can ease the storage.
 })
 
-ImageSchema.virtual('showPage').get(function() {
+ImageSchema.virtual('showPage').get(function () {
     return this.url.replace('/upload', '/upload/w_1920,h_1080,c_fill');
 })
 
@@ -43,9 +45,12 @@ const CampgroundSchema = new Schema({
             ref: 'Review'
         }
     ]
-})
+}, opts)
 
-https://res.cloudinary.com/dhwbsgmjw/image/upload/w_300/v1672680691/YelpCamp/fhnze88gcpuftwb9om9r.png
+CampgroundSchema.virtual('properties.popUpMarkup').get(function () {
+    return `<strong><a href="/campgrounds/${this._id}">${this.title}</a><strong>`;
+});
+
 
 
 // This post middleware is binded to what we have used for deleting the campground `findByIdAndDelete`
