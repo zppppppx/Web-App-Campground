@@ -1,4 +1,5 @@
-
+const session = require('express-session');
+const MongoDBStore = require('connect-mongo');
 
 const scriptSrcUrls = [
     "https://stackpath.bootstrapcdn.com/",
@@ -45,8 +46,23 @@ module.exports.helmetContentSecurityConfig = {
 }
 
 
+// const dbUrl = process.env.DB_URL;
+const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/yelp-camp';
+const secret = prcess.env.SECRET ||'thisshouldbeabettersecret'
+module.exports.dbUrl = dbUrl;
+
+const store = MongoDBStore.create({
+    mongoUrl: dbUrl,
+    secret: secret,
+    touchAfter: 24 * 60 * 60 // in seconds
+});
+store.on("error", e => {
+    console.log('Session Store Error', e);
+})
+
 module.exports.sessionConfig = {
-    secret: 'thisshouldbeabettersecret',
+    store: store,
+    secret: secret,
     resave: false,
     saveUninitialized: true,
     name: 'session',
@@ -56,4 +72,6 @@ module.exports.sessionConfig = {
         httpOnly: true,
         // secure: true, // this will only allow https request
     }
-}
+};
+
+
