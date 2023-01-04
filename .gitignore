@@ -3,3 +3,7 @@
 
 # Modules
 node_modules
+
+# some test files
+*.jpg
+testfiles
