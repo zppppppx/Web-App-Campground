@@ -10,7 +10,7 @@ const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const session = require('express-session');
 const flash = require('connect-flash');
-const mongoSanitize = require('express-mongo-sanitize');
+
 
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
@@ -21,6 +21,8 @@ const User = require('./models/user');
 
 // Validation and Error
 const ExpressError = require('./utils/ExpressError');
+const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet');
 
 // Connecting with the database
 mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp')
@@ -40,16 +42,19 @@ app.use(express.static(path.join(__dirname, 'public'))); // Setting the static r
 app.use(mongoSanitize()); // Setting prohibition on some administrative queries
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'))
+app.use(helmet({contentSecurityPolicy: false, crossOriginEmbedderPolicy: false}));
 
 // Setting express session
 const sessionConfig = {
     secret: 'thisshouldbeabettersecret',
     resave: false,
     saveUninitialized: true,
+    name: 'session',
     cookie: {
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: Date.now() + 1000 * 60 * 60 * 24 * 7,
         httpOnly: true,
+        // secure: true, // this will only allow https request
     }
 }
 app.use(session(sessionConfig));
@@ -78,6 +83,7 @@ app.use((req, res, next) => {
 const userRoutes = require('./routes/users');
 const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
+
 app.use('/', userRoutes);
 app.use('/campgrounds', campgroundRoutes); // campground site
 app.use('/campgrounds/:id/reviews', reviewRoutes); // review site
