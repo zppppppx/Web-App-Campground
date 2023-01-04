@@ -46,7 +46,7 @@ module.exports.helmetContentSecurityConfig = {
 }
 
 
-// const dbUrl = process.env.DB_URL;
+// const dbUrl = 'mongodb://127.0.0.1:27017/yelp-camp';
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/yelp-camp';
 const secret = process.env.SECRET ||'thisshouldbeabettersecret'
 module.exports.dbUrl = dbUrl;
@@ -75,3 +75,4 @@ module.exports.sessionConfig = {
 };
 
 
+module.exports.pageLimit = 20; // How many items showed in the index page
