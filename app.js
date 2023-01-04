@@ -1,5 +1,5 @@
 // Basic Framework
-if(process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
 
@@ -25,10 +25,12 @@ const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 
 // Some cofigurations
-const {sessionConfig, helmetContentSecurityConfig} = require('./Config');
+const { sessionConfig, helmetContentSecurityConfig } = require('./Config');
 
 // Connecting with the database
-mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp')
+const dbUrl = process.env.DB_URL;
+mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp');
+// mongoose.connect(dbUrl);
 mongoose.set('strictQuery', false); // prepare for mongoose 7
 
 const db = mongoose.connection;
@@ -45,7 +47,7 @@ app.use(express.static(path.join(__dirname, 'public'))); // Setting the static r
 app.use(mongoSanitize()); // Setting prohibition on some administrative queries
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'))
-app.use(helmet({contentSecurityPolicy: helmetContentSecurityConfig, crossOriginEmbedderPolicy: false}));
+app.use(helmet({ contentSecurityPolicy: helmetContentSecurityConfig, crossOriginEmbedderPolicy: false }));
 // app.use(helmet.contentSecurityPolicy(helmetContentSecurityConfig));
 
 // Setting express session
