@@ -48,7 +48,7 @@ module.exports.helmetContentSecurityConfig = {
 
 // const dbUrl = process.env.DB_URL;
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/yelp-camp';
-const secret = prcess.env.SECRET ||'thisshouldbeabettersecret'
+const secret = process.env.SECRET ||'thisshouldbeabettersecret'
 module.exports.dbUrl = dbUrl;
 
 const store = MongoDBStore.create({
