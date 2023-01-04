@@ -24,6 +24,9 @@ const ExpressError = require('./utils/ExpressError');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 
+// Some cofigurations
+const {sessionConfig, helmetContentSecurityConfig} = require('./Config');
+
 // Connecting with the database
 mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp')
 mongoose.set('strictQuery', false); // prepare for mongoose 7
@@ -42,21 +45,10 @@ app.use(express.static(path.join(__dirname, 'public'))); // Setting the static r
 app.use(mongoSanitize()); // Setting prohibition on some administrative queries
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'))
-app.use(helmet({contentSecurityPolicy: false, crossOriginEmbedderPolicy: false}));
+app.use(helmet({contentSecurityPolicy: helmetContentSecurityConfig, crossOriginEmbedderPolicy: false}));
+// app.use(helmet.contentSecurityPolicy(helmetContentSecurityConfig));
 
 // Setting express session
-const sessionConfig = {
-    secret: 'thisshouldbeabettersecret',
-    resave: false,
-    saveUninitialized: true,
-    name: 'session',
-    cookie: {
-        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-        maxAge: Date.now() + 1000 * 60 * 60 * 24 * 7,
-        httpOnly: true,
-        // secure: true, // this will only allow https request
-    }
-}
 app.use(session(sessionConfig));
 
 // Setting up passport (passport must be set before routes!)
