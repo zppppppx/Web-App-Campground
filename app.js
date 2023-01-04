@@ -35,7 +35,7 @@ mongoose.set('strictQuery', false); // prepare for mongoose 7
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "Connection Error:"));
 db.once('open', () => {
-    console.log('Database connected')
+    console.log('Database connected', dbUrl);
 })
 
 // Setting the ejs engine
