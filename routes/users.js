@@ -3,11 +3,12 @@ const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
 const users = require('../controllers/users');
 const passport = require('passport');
+const { isSamePassword } = require('../middleware');
 
 // Register
 router.route('/register')
     .get(users.renderRegisterForm)
-    .post(catchAsync(users.register));
+    .post(isSamePassword, catchAsync(users.register));
 
 
 // Log in & log out

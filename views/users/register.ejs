@@ -10,15 +10,15 @@
                         <form action="/register" method="POST" class="validated-form" novalidate>
                             <div class="mb-3">
                                 <label class="form-label" for="username">Username</label>
-                                <input class="form-control" type="text" id="username" name="username" required
-                                    autofocus>
+                                <input class="form-control" type="text" id="username" value="<%=username || ''%>"
+                                name="username" required autofocus>
                                 <div class="valid-feedback">
                                     Looks good!
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="email">Email</label>
-                                <input class="form-control" type="email" id="email" name="email" required>
+                                <input class="form-control" type="email" id="email" name="email" value="<%=email || ''%>" required>
                                 <div class="valid-feedback">
                                     Looks good!
                                 </div>
@@ -26,6 +26,13 @@
                             <div class="mb-3">
                                 <label class="form-label" for="password">Password</label>
                                 <input class="form-control" type="password" id="password" name="password" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="password_confirm">Confirm Password</label>
+                                <input class="form-control" type="password" id="password_confirm" name="password_confirm" required>
                                 <div class="valid-feedback">
                                     Looks good!
                                 </div>

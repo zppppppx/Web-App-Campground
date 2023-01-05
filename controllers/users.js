@@ -1,6 +1,11 @@
 const User = require('../models/user');
 
 module.exports.renderRegisterForm = (req, res) => {
+    res.locals.username = req.session.username || '';
+    res.locals.email = req.session.email || '';
+    delete req.session.username;
+    delete req.session.email;
+    console.log(res.locals);
     res.render('users/register');
 };
 
@@ -11,6 +16,8 @@ module.exports.register = async (req, res, next) => {
         const registerUser = await User.register(user, password);
         req.login(registerUser, err => {
             if(err) return next(err);
+            delete req.session.username;
+            delete req.session.email;
             req.flash('success', 'Welcome to YelpCamp!');
             res.redirect('/campgrounds');
         })
