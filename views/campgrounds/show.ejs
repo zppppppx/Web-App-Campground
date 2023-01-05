@@ -97,7 +97,7 @@
         </form>
       <% } %> 
 
-      <div class="shadow">
+      <div class="shadow p-2 mb-3">
         <% for(let review of campground.reviews.slice((pageConfig.page - 1) * pageConfig.pageLimit, pageConfig.page * pageConfig.pageLimit)) {%>
           <div class="mb-3 card">
             <div class="card-body">
