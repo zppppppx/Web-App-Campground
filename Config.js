@@ -67,8 +67,8 @@ module.exports.sessionConfig = {
     saveUninitialized: true,
     name: 'session',
     cookie: {
-        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-        maxAge: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        expires: Date.now() + 1000 * 60 * 60 * 24,
+        maxAge: Date.now() + 1000 * 60 * 60 * 24,
         httpOnly: true,
         // secure: true, // this will only allow https request
     }
