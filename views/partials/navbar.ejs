@@ -18,15 +18,26 @@
                 <li class="nav-item"><a class="nav-link" href="/campgrounds/new">New Campground</a></li>
                 <!-- <li class="text-light"><a href="/" class="nav-link"><%= currentUser %> </a></li> -->
             </ul>
-
+            
             <div class="navbar-nav d-flex">
-                <% if (!currentUser) {%> 
-                <a class="nav-link btn text-light" href="/login">Login</a>
-                <a class="nav-link btn text-light" href="/register">Register</a>
-                <% } else { %>
-                <a class="nav-link btn text-light" href="/logout">Logout</a>
-                <a class="nav-link btn text-light" href="/changePassword">Change Password</a>
-                <% } %> 
+                <div class="dropdown d-flex">
+                    <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton1" 
+                    data-bs-toggle="dropdown" aria-expanded="false" data-bs-offset="100,20">
+                      <%= currentUser ? currentUser.username : 'User Panel' %> 
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark mt-3" 
+                    aria-labelledby="dropdownMenuButton1">
+                        <% if (!currentUser) {%> 
+                        <li><a class="dropdown-item sm" href="/register">register</a></li>
+                        <li><a class="dropdown-item" href="/login">login</a></li>
+                        <% } else { %>
+                        <li><a class="dropdown-item sm" href="/logout">Logout</a></li>
+                        <li><a class="dropdown-item" href="/changePassword">Change Password</a></li>
+                        <% } %> 
+                    </ul>
+                </div>
+
+                
             </div>
         </div>
     </div>

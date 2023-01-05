@@ -65,7 +65,6 @@ app.use(flash())
 
 app.use((req, res, next) => {
     res.locals.currentUser = req.user;
-    // console.log(req.user);
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     res.locals.loadMap = false; // a flag marking which pages to load map box cdn
