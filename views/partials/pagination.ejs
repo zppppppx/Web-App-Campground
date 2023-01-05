@@ -1,0 +1,46 @@
+<div class="container d-flex justify-content-center align-items-center ">
+    <nav aria-label="...">
+        <ul class="pagination flex-wrap">
+            <% if ( pageConfig.pages > 1 ) { %> 
+            <li class="page-item <%= pageConfig.page == 1 ? "disabled" : "" %>">
+                <a class="page-link" href="/campgrounds?page=1" 
+                    tabindex="-1" aria-disabled="true"><<</a>
+            </li>
+            <% } %> 
+            <% if (pageConfig.page > 5) { %>
+                <!-- Previous 5 pages -->
+                <li class="page-item"><a class="page-link" 
+                    href="/campgrounds?page=<%= pageConfig.startPage-1 %>">...</a></li>
+            <% } %> 
+
+            <% for (let i = pageConfig.startPage; i < pageConfig.endPage+1; i++) { %>
+                <!-- The middle 5 pages -->
+                <li class="page-item <%= pageConfig.page == i ? "active" : "" %>"><a class="page-link" 
+                    href="/campgrounds?page=<%= i %>"><%= i %></a></li>
+            <% } %> 
+
+            <% if (pageConfig.pages - pageConfig.page >= 5) { %> 
+                <!-- next 5 pages -->
+                <li class="page-item"><a class="page-link" 
+                    href="/campgrounds?page=<%= pageConfig.endPage+1 %>">...</a></li>
+            <% } %> 
+            <% if ( pageConfig.pages > 1 ) { %> 
+            <li class="page-item <%= pageConfig.page == pageConfig.pages ? "disabled" : "" %>">
+                <a class="page-link" href="/campgrounds?page=<%= pageConfig.pages %>">>></a>
+            </li>
+            <% } %> 
+
+            <!-- <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item active" aria-current="page">
+                <a class="page-link" href="#">2</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+            </li> -->
+        </ul>
+    </nav>
+</div>

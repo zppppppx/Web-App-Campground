@@ -48,7 +48,7 @@ module.exports.helmetContentSecurityConfig = {
 
 // const dbUrl = 'mongodb://127.0.0.1:27017/yelp-camp';
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/yelp-camp';
-const secret = process.env.SECRET ||'thisshouldbeabettersecret'
+const secret = process.env.SECRET || 'thisshouldbeabettersecret'
 module.exports.dbUrl = dbUrl;
 
 const store = MongoDBStore.create({
@@ -75,4 +75,19 @@ module.exports.sessionConfig = {
 };
 
 
-module.exports.pageLimit = 20; // How many items showed in the index page
+module.exports.pageLimit = 12; // How many items showed in the index page
+module.exports.pageSpan = 6; // How many pages in the middel bar of pagination
+
+module.exports.pageSetConfig = (item_num, pageLimit, page, pageSpan) => {
+    const pages = Math.ceil(item_num / pageLimit);
+    const startPage = page % pageSpan === 0 ? Math.floor((page - 1) / pageSpan) * pageSpan + 1 : Math.floor(page / pageSpan) * pageSpan + 1;
+    const endPage = page + pageSpan - 1 >= pages ? pages : startPage + pageSpan - 1;
+
+    return {
+        page: page,
+        pages: pages,
+        pageLimit: pageLimit,
+        startPage: startPage,
+        endPage: endPage,
+    }
+}
