@@ -65,7 +65,7 @@ module.exports.isSamePassword = (req, res, next) => {
     req.session.email = req.body.email || '';
     if(req.body.password !== req.body.password_confirm) {
         req.flash('error', 'Your passwords do not match, please try again.');
-        return res.redirect('/register');
+        return res.redirect(req.originalUrl);
     }
     next();
 }

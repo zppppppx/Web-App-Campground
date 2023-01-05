@@ -41,6 +41,26 @@ module.exports.login = (req, res) => {
         res.redirect(redirectUrl);
 };
 
+module.exports.renderChangeForm = (req, res) => {
+    res.render('users/changeForm');
+}
+
+module.exports.changePassword = async (req, res) => {
+    User.findById(req.user._id, (err, user) => {
+        // console.log(err, user);
+        user.changePassword(req.body.password_former, req.body.password, err => {
+            if(err) {
+                req.flash('error', 'Your passwords do not match, please try again.');
+                res.redirect('/changePassword');
+            }
+            else {
+                req.flash('success', 'Successfully changed the password');
+                res.redirect('/campgrounds');
+            }
+        })
+    })
+}
+
 module.exports.logout = (req, res, next) => {
     req.logout(err => {
         if (err) return next(err);

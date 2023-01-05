@@ -3,7 +3,7 @@ const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
 const users = require('../controllers/users');
 const passport = require('passport');
-const { isSamePassword } = require('../middleware');
+const { isSamePassword, isLoggedIn } = require('../middleware');
 
 // Register
 router.route('/register')
@@ -22,5 +22,8 @@ router.route('/login')
 router.route('/logout')
     .get(users.logout);
 
+router.route('/changePassword')
+    .get(users.renderChangeForm)
+    .post(isLoggedIn, isSamePassword, catchAsync(users.changePassword))
 
 module.exports = router;
