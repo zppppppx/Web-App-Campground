@@ -4,8 +4,8 @@
 
   <div class="row">
     <div class="col-6">
-      <div id="campgroundGallery" class="carousel slide carousel-dark" data-bs-ride="carousel">
-        <div class="carousel-inner">
+      <div id="campgroundGallery" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner rounded-2 mb-1">
           <% if(!campground.images.length) {%> 
             <div class="carousel-item active">
               <img src="https://res.cloudinary.com/dhwbsgmjw/image/upload/v1672714865/YelpCamp/pexels-photo-219972_e6pa8k.jpg"
@@ -68,6 +68,7 @@
       
       <!-- Review Part -->
       <% if(currentUser) { %> 
+        <div class="shadow p-2 mb-3 rounded-3">
         <h2>Leave a Review</h2>
         <form action="/campgrounds/<%=campground._id%>/reviews" method="POST" class="mb-3 validated-form" novalidate>
           <!-- <div class="mb-3">
@@ -89,15 +90,16 @@
               <label for="first-rate5" title="Amazing">5 stars</label>
             </fieldset>
           </div>
-          <div class="mb-3">
+          <div>
             <label class="form-label" for="body"> Review Text </label>
             <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3" required></textarea>
           </div>
           <button class="btn btn-success">Submit</button>
         </form>
+        </div>
       <% } %> 
 
-      <div class="shadow p-2 mb-3">
+      <div class="shadow p-2 mb-3 rounded-3">
         <% for(let review of campground.reviews.slice((pageConfig.page - 1) * pageConfig.pageLimit, pageConfig.page * pageConfig.pageLimit)) {%>
           <div class="mb-3 card">
             <div class="card-body">
