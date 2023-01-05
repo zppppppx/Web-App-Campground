@@ -7,8 +7,8 @@
                     tabindex="-1" aria-disabled="true"><<</a>
             </li>
             <% } %> 
-            <% if (pageConfig.page > 5) { %>
-                <!-- Previous 5 pages -->
+            <% if (pageConfig.page > pageConfig.pageSpan) { %>
+                <!-- Previous few pages -->
                 <li class="page-item"><a class="page-link" 
                     href="/campgrounds?page=<%= pageConfig.startPage-1 %>">...</a></li>
             <% } %> 
@@ -19,8 +19,8 @@
                     href="/campgrounds?page=<%= i %>"><%= i %></a></li>
             <% } %> 
 
-            <% if (pageConfig.pages - pageConfig.page >= 5) { %> 
-                <!-- next 5 pages -->
+            <% if (pageConfig.pages - pageConfig.page >= pageConfig.pageSpan) { %> 
+                <!-- next few pages -->
                 <li class="page-item"><a class="page-link" 
                     href="/campgrounds?page=<%= pageConfig.endPage+1 %>">...</a></li>
             <% } %> 

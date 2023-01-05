@@ -25,6 +25,7 @@ module.exports.index = async (req, res) => {
     res.render('campgrounds/indexPage', { campgrounds_all, campgrounds, loadMap, pageConfig });
 };
 
+
 module.exports.renderNewForm = (req, res) => {
     res.render('campgrounds/new') // cannot write as '/campgrounds/new'
 };

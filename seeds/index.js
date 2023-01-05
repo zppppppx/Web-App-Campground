@@ -5,13 +5,15 @@ const { places, descriptors } = require('./seedHelpers')
 const Campground = require('../models/campground');
 const Review = require('../models/review')
 
+// const dbUrl = 'mongodb://127.0.0.1:27017/yelp-camp';
+const dbUrl = 'mongodb+srv://root:aPOvHmhOprEFkypU@yelpcamp.p6do8nn.mongodb.net/?retryWrites=true&w=majority';
 
-mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp')
+mongoose.connect(dbUrl);
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "Connection Error:"));
 db.once('open', () => {
-    console.log('Database connected')
+    console.log('Database connected', dbUrl);
 })
 
 const sample = array => array[Math.floor(Math.random() * array.length)];
@@ -19,11 +21,11 @@ const sample = array => array[Math.floor(Math.random() * array.length)];
 const seedDB = async () => {
     await Campground.deleteMany({});
     await Review.deleteMany({});
-    for (let i = 0; i < 500; i++) {
+    for (let i = 0; i < 100; i++) {
         const random1000 = Math.floor(Math.random() * 1000);
         const price = Math.floor(Math.random() * 20) + 10;
         const camp = new Campground({
-            author: '63b087f02a274998d11f5caa',
+            author: '63b52d1891e0cf6696d4bfcb',
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
             title: `${sample(descriptors)} ${sample(places)}`,
             price: price,

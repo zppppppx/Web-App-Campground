@@ -87,6 +87,7 @@ module.exports.pageSetConfig = (item_num, pageLimit, page, pageSpan) => {
         page: page,
         pages: pages,
         pageLimit: pageLimit,
+        pageSpan: pageSpan,
         startPage: startPage,
         endPage: endPage,
     }
