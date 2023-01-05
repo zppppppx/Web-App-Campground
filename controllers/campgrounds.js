@@ -1,3 +1,4 @@
+
 const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 const mapBoxToken = process.env.MAPBOX_TOKEN;
 
@@ -9,9 +10,15 @@ const { pageLimit, pageSpan, pageSetConfig } = require('../Config');
 const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 
 module.exports.index = async (req, res) => {
-    // console.log(req.query);
-    var { page } = req.query;
-    // if (!page) { page = 1 };
+    // console.log(req.originalUrl);
+    res.locals.pageUrl = '/campgrounds';
+    var { page, ...otherQueries } = req.query;
+    suffixQuery = '';
+    for(let query in otherQueries) {
+        suffixQuery += `&${query}=${otherQueries[query]}`;
+    }
+    // console.log(suffixQuery);
+
     page = page ? Number(page) : 1;
     const campgrounds_all = await Campground.find({});
     const item_num = campgrounds_all.length;
@@ -19,10 +26,10 @@ module.exports.index = async (req, res) => {
     const campgrounds = campgrounds_all.slice((page - 1) * pageLimit, page * pageLimit);
     
     const pageConfig = pageSetConfig(item_num, pageLimit, page, pageSpan);
-    console.log(pageConfig);
+    // console.log(pageConfig);
 
     const loadMap = true;
-    res.render('campgrounds/indexPage', { campgrounds_all, campgrounds, loadMap, pageConfig });
+    res.render('campgrounds/indexPage', { campgrounds_all, campgrounds, loadMap, pageConfig, suffixQuery });
 };
 
 
@@ -46,6 +53,7 @@ module.exports.createCampground = async (req, res) => {
 };
 
 module.exports.showCampground = async (req, res) => {
+    res.locals.pageUrl = `/campgrounds/${req.params.id}`;
     const campground = await Campground.findById(req.params.id).populate({
         path: 'reviews',
         populate: {

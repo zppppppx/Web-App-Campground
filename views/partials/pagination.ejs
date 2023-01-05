@@ -3,44 +3,32 @@
         <ul class="pagination flex-wrap">
             <% if ( pageConfig.pages > 1 ) { %> 
             <li class="page-item <%= pageConfig.page == 1 ? "disabled" : "" %>">
-                <a class="page-link" href="/campgrounds?page=1" 
+                <a class="page-link" href="<%=pageUrl%>?page=1<%= suffixQuery %>" 
                     tabindex="-1" aria-disabled="true"><<</a>
             </li>
             <% } %> 
             <% if (pageConfig.page > pageConfig.pageSpan) { %>
                 <!-- Previous few pages -->
                 <li class="page-item"><a class="page-link" 
-                    href="/campgrounds?page=<%= pageConfig.startPage-1 %>">...</a></li>
+                    href="<%=pageUrl%>?page=<%= pageConfig.startPage-1 %><%= suffixQuery %>">...</a></li>
             <% } %> 
 
             <% for (let i = pageConfig.startPage; i < pageConfig.endPage+1; i++) { %>
                 <!-- The middle 5 pages -->
                 <li class="page-item <%= pageConfig.page == i ? "active" : "" %>"><a class="page-link" 
-                    href="/campgrounds?page=<%= i %>"><%= i %></a></li>
+                    href="<%=pageUrl%>?page=<%= i %><%= suffixQuery %>"><%= i %></a></li>
             <% } %> 
 
             <% if (pageConfig.pages - pageConfig.page >= pageConfig.pageSpan) { %> 
                 <!-- next few pages -->
                 <li class="page-item"><a class="page-link" 
-                    href="/campgrounds?page=<%= pageConfig.endPage+1 %>">...</a></li>
+                    href="<%=pageUrl%>?page=<%= pageConfig.endPage+1 %><%= suffixQuery %>">...</a></li>
             <% } %> 
             <% if ( pageConfig.pages > 1 ) { %> 
             <li class="page-item <%= pageConfig.page == pageConfig.pages ? "disabled" : "" %>">
-                <a class="page-link" href="/campgrounds?page=<%= pageConfig.pages %>">>></a>
+                <a class="page-link" href="<%=pageUrl%>?page=<%= pageConfig.pages %><%= suffixQuery %>">>></a>
             </li>
             <% } %> 
-
-            <!-- <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item active" aria-current="page">
-                <a class="page-link" href="#">2</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#">Next</a>
-            </li> -->
         </ul>
     </nav>
 </div>
