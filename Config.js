@@ -78,7 +78,10 @@ module.exports.sessionConfig = {
 module.exports.pageLimit = 12; // How many items showed in the index page
 module.exports.pageSpan = 6; // How many pages in the middel bar of pagination
 
-module.exports.pageSetConfig = (item_num, pageLimit, page, pageSpan) => {
+module.exports.reviewPageLimit = 4;
+module.exports.reviewPageSpan = 5;
+
+module.exports.pageSetConfig = (item_num, pageLimit, pageSpan, page) => {
     const pages = Math.ceil(item_num / pageLimit);
     const startPage = page % pageSpan === 0 ? Math.floor((page - 1) / pageSpan) * pageSpan + 1 : Math.floor(page / pageSpan) * pageSpan + 1;
     const endPage = page + pageSpan - 1 >= pages ? pages : startPage + pageSpan - 1;

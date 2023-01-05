@@ -4,7 +4,7 @@ const mapBoxToken = process.env.MAPBOX_TOKEN;
 
 const Campground = require('../models/campground');
 const { cloudinary } = require('../cloudinary/index');
-const { pageLimit, pageSpan, pageSetConfig } = require('../Config');
+const { pageLimit, pageSpan, reviewPageLimit, reviewPageSpan, pageSetConfig } = require('../Config');
 // const { pageSetConfig } = require('../utils/pageSetConfig');
 
 const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
@@ -25,7 +25,7 @@ module.exports.index = async (req, res) => {
     // console.log(campgrounds.length);
     const campgrounds = campgrounds_all.slice((page - 1) * pageLimit, page * pageLimit);
     
-    const pageConfig = pageSetConfig(item_num, pageLimit, page, pageSpan);
+    const pageConfig = pageSetConfig(item_num, pageLimit, pageSpan, page);
     // console.log(pageConfig);
 
     const loadMap = true;
@@ -54,6 +54,13 @@ module.exports.createCampground = async (req, res) => {
 
 module.exports.showCampground = async (req, res) => {
     res.locals.pageUrl = `/campgrounds/${req.params.id}`;
+    var { page, ...otherQueries } = req.query;
+    suffixQuery = '';
+    for(let query in otherQueries) {
+        suffixQuery += `&${query}=${otherQueries[query]}`;
+    }
+    page = page ? Number(page) : 1;
+
     const campground = await Campground.findById(req.params.id).populate({
         path: 'reviews',
         populate: {
@@ -65,8 +72,10 @@ module.exports.showCampground = async (req, res) => {
         req.flash('error', 'Cannot find that campground!');
         res.redirect('/campgrounds');
     }
+    const item_num = campground.reviews.length;
+    const pageConfig = pageSetConfig(item_num, reviewPageLimit, reviewPageSpan, page);
     const loadMap = true;
-    res.render('campgrounds/show', { campground, loadMap });
+    res.render('campgrounds/show', { campground, loadMap, pageConfig });
 };
 
 module.exports.renderEditForm = async (req, res) => {
