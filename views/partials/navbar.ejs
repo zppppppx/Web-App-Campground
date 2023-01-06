@@ -28,12 +28,13 @@
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark mt-3" 
                     aria-labelledby="dropdownMenuButton1">
                         <% if (!currentUser) {%> 
-                        <li><a class="dropdown-item sm" href="/register">register</a></li>
+                        <li><a class="dropdown-item" href="/register">register</a></li>
                         <li><a class="dropdown-item" href="/login">login</a></li>
                         <% } else { %>
-                        <li><a class="dropdown-item sm" href="/logout">Logout</a></li>
-                        <li><a class="dropdown-item" href="/changePassword">Reset</a></li>
+                        <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                        <li><a class="dropdown-item" href="/changePassword">Reset PWD</a></li>
                         <% } %> 
+                        <li><a class="dropdown-item" href="/forgotPassword">Forgot PWD</a></li>
                     </ul>
                 </div>
 
