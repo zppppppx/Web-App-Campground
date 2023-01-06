@@ -26,4 +26,12 @@ router.route('/changePassword')
     .get(users.renderChangeForm)
     .post(isLoggedIn, isSamePassword, catchAsync(users.changePassword))
 
+router.route('/forgotPassword')
+    .get(users.renderResetQuestForm)
+    .post(catchAsync(users.sendResetLink))
+
+router.route('/resetPassword')
+    .get(catchAsync(users.renderResetForm))
+    .post(isSamePassword, catchAsync(users.resetPassword))
+
 module.exports = router;
