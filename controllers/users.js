@@ -82,7 +82,7 @@ module.exports.renderResetQuestForm = (req, res, next) => {
 }
 
 module.exports.sendResetLink = async (req, res, next) => {
-    const user = await User.findOne({ username: req.body.username }); // this needs to be modified to email allowed
+    const user = await User.findOne({ $or: [{username: req.body.username}, {email: req.body.username}] }); // this needs to be modified to email allowed
     if (!user) {
         req.flash('error', 'User does not exist, please try again.');
         return res.redirect('/forgotPassword');
@@ -103,7 +103,7 @@ module.exports.sendResetLink = async (req, res, next) => {
         });
 
         await sendEmail(resetToken, user, next);
-        
+
         req.flash('success', 'An email has been sent to your mailbox.');
         res.redirect('/forgotPassword');
 
