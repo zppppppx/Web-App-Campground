@@ -75,7 +75,7 @@ module.exports.showCampground = async (req, res) => {
     const item_num = campground.reviews.length;
     const pageConfig = pageSetConfig(item_num, reviewPageLimit, reviewPageSpan, page);
     const loadMap = true;
-    res.render('campgrounds/show', { campground, loadMap, pageConfig });
+    res.render('campgrounds/show', { campground, loadMap, pageConfig, suffixQuery });
 };
 
 module.exports.renderEditForm = async (req, res) => {
