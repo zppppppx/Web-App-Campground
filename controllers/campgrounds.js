@@ -54,6 +54,7 @@ module.exports.createCampground = async (req, res) => {
 
 module.exports.showCampground = async (req, res) => {
     res.locals.pageUrl = `/campgrounds/${req.params.id}`;
+    console.log(req.originalUrl);
     var { page, ...otherQueries } = req.query;
     suffixQuery = '';
     for(let query in otherQueries) {
