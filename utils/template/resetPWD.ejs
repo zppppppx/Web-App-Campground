@@ -1,0 +1,5 @@
+<h3>Hi, dear <%= user.username %>, </h3>
+<p>This is your password reset link, please keep it secret.</p>
+<p>Also, due to lack of authentication on such a poor email setting, 
+    the url could be blocked by the mailbox, you can try reset the filter rules to unblock us.</p>
+<p><a href="<%=process.env.DOMAIN%>/resetPassword?token=<%= token %>&user=<%= user._id %>">Reset your password</a></p>

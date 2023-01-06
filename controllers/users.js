@@ -3,6 +3,7 @@ const crypto = require('crypto');
 const UserToken = require('../models/userToken');
 const bcrypt = require('bcrypt');
 const ExpressError = require('../utils/ExpressError');
+const { sendEmail } = require('../utils/sendEmail');
 
 module.exports.renderRegisterForm = (req, res) => {
     res.locals.username = req.session.username || '';
@@ -100,7 +101,12 @@ module.exports.sendResetLink = async (req, res, next) => {
                 }).save();
             }
         });
-        res.render('users/forgotSimu', { resetToken, user: user._id });
+
+        await sendEmail(resetToken, user, next);
+        
+        req.flash('success', 'An email has been sent to your mailbox.');
+        res.redirect('/forgotPassword');
+
     }
 }
 
@@ -129,9 +135,9 @@ module.exports.resetPassword = async (req, res, next) => {
         req.flash('error', 'Invalid token or user, please try again.');
         res.redirect('/forgotPassword');
     } else {
-        await user.setPassword(req.body.password, async (err, user)=> {
-            if(err) {
-                throw ExpressError('Invalid token or user, please try again.', 500);
+        await user.setPassword(req.body.password, async (err, user) => {
+            if (err) {
+                throw new ExpressError('Invalid token or user, please try again.', 500);
             }
             else {
                 await user.save();
