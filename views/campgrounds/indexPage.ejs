@@ -1,7 +1,16 @@
 <% layout('layouts/boilerplate') %>
 
     <div id='cluster-map'></div>  
-    <h1 class="font-cursive">All Campgrounds</h1>
+    <div class="col-12">
+        <nav class="navbar navbar-light bg-light">
+            <div class="container">
+                <div class="me-auto"><h1 class="font-cursive inline">All Campgrounds</h1></div>
+                <span class="justify-content-end"><%- include('../partials/filter') %></span> 
+            </div>
+        </nav>
+    </div>
+    
+    <div class="col-12">
     <ul>
         <% for (let campground of campgrounds) {%>
             <div class="card mb-3">
@@ -20,13 +29,14 @@
                                     <%= campground.location %>
                                 </small>
                             </p>
-                            <a href="/campgrounds/<%= campground._id %>" class="btn btn-primary"> View <%= campground.title %></a>
+                            <a href="/campgrounds/<%= campground._id %>" class="btn btn-dark"> View <%= campground.title %></a>
                         </div>
                     </div>
                 </div>
             </div>
             <%} %>
     </ul>
+    </div>
 
     <%- include('../partials/pagination') %> 
     

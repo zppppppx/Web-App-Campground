@@ -3,28 +3,32 @@ const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 const mapBoxToken = process.env.MAPBOX_TOKEN;
 
 const Campground = require('../models/campground');
+const { findCampground } = require('../utils/findCampground');
 const { cloudinary } = require('../cloudinary/index');
 const { pageLimit, pageSpan, reviewPageLimit, reviewPageSpan, pageSetConfig } = require('../Config');
 // const { pageSetConfig } = require('../utils/pageSetConfig');
 
 const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 
-module.exports.index = async (req, res) => {
-    // console.log(req.originalUrl);
+module.exports.index = async (req, res, next) => {
+    // console.log(req.query);
+    // const test = await Campground.findOne({price_low: 0});
+    // console.log(test);
     res.locals.pageUrl = '/campgrounds';
     var { page, ...otherQueries } = req.query;
     suffixQuery = '';
-    for(let query in otherQueries) {
+    for (let query in otherQueries) {
         suffixQuery += `&${query}=${otherQueries[query]}`;
     }
     // console.log(suffixQuery);
 
     page = page ? Number(page) : 1;
-    const campgrounds_all = await Campground.find({});
+    // const campgrounds_all = await Campground.find({});
+    const campgrounds_all = await findCampground(otherQueries, next);
     const item_num = campgrounds_all.length;
     // console.log(campgrounds.length);
     const campgrounds = campgrounds_all.slice((page - 1) * pageLimit, page * pageLimit);
-    
+
     const pageConfig = pageSetConfig(item_num, pageLimit, pageSpan, page);
     // console.log(pageConfig);
 
@@ -57,7 +61,7 @@ module.exports.showCampground = async (req, res) => {
     // console.log(req.originalUrl);
     var { page, ...otherQueries } = req.query;
     suffixQuery = '';
-    for(let query in otherQueries) {
+    for (let query in otherQueries) {
         suffixQuery += `&${query}=${otherQueries[query]}`;
     }
     page = page ? Number(page) : 1;
